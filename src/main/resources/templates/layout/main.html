@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout (title, section)">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="${title}">
+        <title>ADO3</title>
+    </th:block>
+
+    <link rel="stylesheet" href="/css/app.css" th:href="@{/css/app.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<header class="topbar">
+    <nav class="container">
+        <a href="/" th:href="@{/}" class="brand">ADO3</a>
+        <div class="menu">
+            <a href="/" th:href="@{/}">Início</a>
+            <a href="/carros" th:href="@{/carros}">Carros</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <th:block th:replace="${section}">
+        <p>Sem conteúdo.</p>
+    </th:block>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <small>© <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2025</span> ADO3</small>
+    </div>
+</footer>
+
+</body>
+</html>

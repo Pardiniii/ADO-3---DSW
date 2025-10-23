@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Carro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff10;
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #e2e8f0;
+            margin-bottom: 28px;
+            letter-spacing: 1px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        textarea {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-size: 15px;
+            transition: box-shadow 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn.outline {
+            background: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn.outline:hover {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 8px;
+            background-color: #fca5a5;
+            color: #7f1d1d;
+            margin-bottom: 20px;
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .text-danger {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .preview {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .preview img {
+            border-radius: 12px;
+            max-width: 240px;
+            border: 2px solid #3b82f6;
+        }
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            padding: 20px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <nav class="container" style="background:#0f172a; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b;">
+        <a class="brand" th:href="@{/}" style="color:#3b82f6; font-weight:700; font-size:20px; text-decoration:none;">ADO3</a>
+        <div class="menu" style="display:flex; gap:20px;">
+            <a th:href="@{/}" style="color:#cbd5e1; text-decoration:none;">Início</a>
+            <a th:href="@{/carros}" style="color:#cbd5e1; text-decoration:none;">Carros</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <h1 th:text="${title}">Cadastro de Carro</h1>
+
+    <!-- FORM PARA CADASTRAR -->
+    <form method="post" enctype="multipart/form-data"
+          th:if="${carro.id} == null"
+          th:object="${carro}"
+          th:action="@{/carros}">
+
+        <div class="alert" th:if="${#fields.hasAnyErrors()}">
+            <strong>Por favor, corrija os erros abaixo:</strong>
+            <ul>
+                <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}"></li>
+            </ul>
+        </div>
+
+        <div class="field">
+            <label>Marca</label>
+            <input type="text" th:field="*{marca}" placeholder="Ex.: Honda">
+        </div>
+
+        <div class="field">
+            <label>Nome</label>
+            <input type="text" th:field="*{nome}" placeholder="Ex.: Civic">
+        </div>
+
+        <div class="field">
+            <label>Valor</label>
+            <input type="number" step="0.01" min="0.01" th:field="*{valor}" placeholder="120000.00">
+        </div>
+
+        <div class="field">
+            <label>Descrição</label>
+            <textarea rows="3" th:field="*{descricao}" placeholder="Detalhes do carro"></textarea>
+        </div>
+
+        <div class="field">
+            <label>Imagem</label>
+            <input type="file" name="imagem" accept="image/*">
+            <span class="hint">Formatos aceitos: PNG / JPG até 2MB</span>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn" type="submit">Salvar</button>
+            <a class="btn outline" th:href="@{/carros}">Cancelar</a>
+        </div>
+    </form>
+
+    <!-- FORM PARA EDITAR -->
+    <form method="post" enctype="multipart/form-data"
+          th:if="${carro.id} != null"
+          th:object="${carro}"
+          th:action="@{|/carros/${carro.id}|}">
+
+        <div class="alert" th:if="${#fields.hasAnyErrors()}">
+            <strong>Por favor, corrija os erros abaixo:</strong>
+            <ul>
+                <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}"></li>
+            </ul>
+        </div>
+
+        <div class="field">
+            <label>Marca</label>
+            <input type="text" th:field="*{marca}" placeholder="Ex.: Honda">
+        </div>
+
+        <div class="field">
+            <label>Nome</label>
+            <input type="text" th:field="*{nome}" placeholder="Ex.: Civic">
+        </div>
+
+        <div class="field">
+            <label>Valor</label>
+            <input type="number" step="0.01" min="0.01" th:field="*{valor}" placeholder="120000.00">
+        </div>
+
+        <div class="field">
+            <label>Descrição</label>
+            <textarea rows="3" th:field="*{descricao}" placeholder="Detalhes do carro"></textarea>
+        </div>
+
+        <div class="field">
+            <label>Imagem</label>
+            <input type="file" name="imagem" accept="image/*">
+            <span class="hint">Formatos aceitos: PNG / JPG até 2MB</span>
+
+            <div class="preview" th:if="${carro.foto}">
+                <img th:src="${carro.foto}" alt="Pré-visualização">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn" type="submit">Salvar Alterações</button>
+            <a class="btn outline" th:href="@{/carros}">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+
+</body>
+</html>
